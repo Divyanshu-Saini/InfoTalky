@@ -32,16 +32,16 @@ app.post('/weather-forcast', (req, res) => {
     if (req.body.result.action === 'weather') {
         let city = req.body.result.parameters['geo-city'];
         let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
-        let msg = '';
+  
         request.get(restUrl, (err, response, body) => {
             if (!err && response.statusCode == 200) {
                 let json = JSON.parse(body);
                 console.log(json);
                 let tempC = ~~(json.main.temp - 273.15);
                 if(tempc > 30)
-                    msg = 'The current condition in ' + json.name + ' is ' + json.weather[0].description + ' and the temperature is ' + tempC + ' ℃ '
+                    let msg = 'The current condition in ' + json.name + ' is ' + json.weather[0].description + ' and the temperature is ' + tempC + ' ℃ '
                 else if(temp < 30)
-                    msg = 'It is child in '+ json.name + ' is '+ json.weather[0].description
+                    let msg = 'It is child in '+ json.name + ' is '+ json.weather[0].description
                 return res.json({
                     speech: msg,
                     displayText: msg,
