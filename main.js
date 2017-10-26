@@ -38,10 +38,7 @@ app.post('/weather-forcast', (req, res) => {
                 let json = JSON.parse(body);
                 console.log(json);
                 let tempC = ~~(json.main.temp - 273.15);
-                if(tempc > 30)
-                    let msg = 'The current condition in ' + json.name + ' is ' + json.weather[0].description + ' and the temperature is ' + tempC + ' ℃ '
-                else if(temp < 30)
-                    let msg = 'It is child in '+ json.name + ' is '+ json.weather[0].description
+                let msg = 'The current condition in ' + json.name + ' is ' + json.weather[0].description + ' and the temperature is ' + tempC + ' ℃ '
                 return res.json({
                     speech: msg,
                     displayText: msg,
