@@ -37,9 +37,8 @@ app.post('/weather-forcast', (req, res) => {
             if (!err && response.statusCode == 200) {
                 let json = JSON.parse(body);
                 console.log(json);
-                let tempF = ~~(json.main.temp * 9 / 5 - 459.67);
                 let tempC = ~~(json.main.temp - 273.15);
-                let msg = 'The current condition in ' + json.name + ' is ' + json.weather[0].description + ' and the temperature is ' + tempF + ' ℉ (' + tempC + ' ℃).'
+                let msg = 'The current condition in ' + json.name + ' is ' + json.weather[0].description + ' and the temperature is ' + tempC + ' ℃.'
                 return res.json({
                     speech: msg,
                     displayText: msg,
