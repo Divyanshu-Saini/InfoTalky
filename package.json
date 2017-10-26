@@ -1,0 +1,31 @@
+{
+  "name": "info-talky",
+  "version": "1.0.0",
+  "description": "An informational chatbot",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Divyanshu-Saini/InfoTalky.git"
+  },
+  "keywords": [
+    "api.ai",
+    "chatbot",
+    "natural language",
+    "infobot"
+  ],
+  "author": "Divaynshu Saini",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Divyanshu-Saini/InfoTalky/issues"
+  },
+  "homepage": "https://github.com/Divyanshu-Saini/InfoTalky#readme",
+  "dependencies": {
+    "apiai": "^4.0.3",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  }
+}
