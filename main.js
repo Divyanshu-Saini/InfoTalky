@@ -126,7 +126,7 @@ app.post('/weather-forcast', (req, res) => {
                 let json = JSON.parse(body);
                 console.log(json);
                 let UNIX_time = json.sys.sunrise;
-                let sunrise =d2d(UNIX_time);
+                let sunrise =utc(UNIX_time);
                 let msg = `The the sun will rise at ${sunrise} am in ${city} ` 
                 return res.json({
                     speech: msg,
