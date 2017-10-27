@@ -55,6 +55,34 @@ app.post('/weather-forcast', (req, res) => {
             }
         })
     }
+    
+    
+    if (req.body.result.action === 'wind-speed'){
+        let city = req.body.result.parameters['geo-city'];
+        let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
+
+        request.get(restUrl, (err, response, body) => {
+            if (!err && response.statusCode == 200) {
+                let json = JSON.parse(body);
+                console.log(json);
+                let windspeed = json.wind.speed
+                let msg = 'The current wind speed in ' + json.name + ' is ' + windspeed + 'meter/sec'
+                return res.json({
+                    speech: msg,
+                    displayText: msg,
+                    source: 'weather'
+                });
+            } else {
+                let errorMessage = 'I cannot access wind speed for this city.';
+                return res.status(400).json({
+                    status: {
+                        code: 400,
+                        errorType: errorMessage
+                    }
+                });
+            }
+        })
+    }
 });
 
 //Starting server
