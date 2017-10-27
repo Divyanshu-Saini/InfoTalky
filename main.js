@@ -116,6 +116,34 @@ app.post('/weather-forcast', (req, res) => {
         })
     }
 
+    if (req.body.result.action === 'sun-rise-set') {
+        let city = req.body.result.parameters['geo-city'];
+        let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
+
+        request.get(restUrl, (err, response, body) => {
+            if (!err && response.statusCode == 200) {
+                let json = JSON.parse(body);
+                console.log(json);
+                let unixtime = jason.sys.sunrise;
+                let sunrisetime = utc(unixtime)
+                let msg = 'The sunrise occurs at' + sunrisetime + 'am in ' + city;
+                return res.json({
+                    speech: msg,
+                    displayText: msg,
+                    source: 'weather'
+                });
+            } else {
+                let errorMessage = 'Cannot get wind direction at the moment.';
+                return res.status(400).json({
+                    status: {
+                        code: 400,
+                        errorType: errorMessage
+                    }
+                });
+            }
+        })
+    }
+
 
 });
 
