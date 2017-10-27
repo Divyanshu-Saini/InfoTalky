@@ -127,7 +127,7 @@ if (req.body.result.action === 'sun-rise-set') {
             if (!err && response.statusCode == 200) {
                 let json = JSON.parse(body);
                 console.log(json);
-                let unixrisetime = jason.sys.sunrise;
+                let unixrisetime = json.sys.sunrise;
                 let unixsettime =json.sys.sunset;
                 let sunrisetime = utc(unixrisetime);
                 let sunsettime = utc(unixsettime);
@@ -154,7 +154,7 @@ if (req.body.result.action === 'sun-rise-set') {
             if (!err && response.statusCode == 200) {
                 let json = JSON.parse(body);
                 console.log(json);
-                let unixtime = jason.sys.sunrise;
+                let unixtime = json.sys.sunrise;
                 let sunrisetime = utc(unixtime)
                 let msg = 'The sunrise occurs at' + sunrisetime + 'am in ' + city;
                 return res.json({
@@ -179,7 +179,7 @@ if (req.body.result.action === 'sun-rise-set') {
             if (!err && response.statusCode == 200) {
                 let json = JSON.parse(body);
                 console.log(json);
-                let unixtime = jason.sys.sunset;
+                let unixtime = json.sys.sunset;
                 let sunsettime = utc(unixtime)
                 let msg = 'The sunset occurs at' + sunsettime + 'am in ' + city;
                 return res.json({
