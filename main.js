@@ -29,7 +29,7 @@ app.post('/weather-forcast', (req, res) => {
     console.log('*** Webhook for api.ai query ***');
     console.log(req.body.result);
 
-    if (req.body.result.action === 'weather') {
+    if (req.body.result.action === 'weather-city') {
         let city = req.body.result.parameters['geo-city'];
         let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
   
