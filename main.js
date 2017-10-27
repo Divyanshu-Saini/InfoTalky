@@ -124,7 +124,7 @@ app.post('/weather-forcast', (req, res) => {
             if (!err && response.statusCode == 200) {
                 let json = JSON.parse(body);
                 console.log(json);
-                let unixtime = jason.sys.sunrise;
+                let unixtime = json.sys.sunrise;
                 let sunrisetime = utc(unixtime)
                 let msg = 'The sunrise occurs at' + sunrisetime + 'am in ' + city;
                 return res.json({
