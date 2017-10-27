@@ -83,6 +83,34 @@ app.post('/weather-forcast', (req, res) => {
             }
         })
     }
+    
+        if (req.body.result.action === 'wind-direction'){
+        let city = req.body.result.parameters['geo-city'];
+        let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
+
+        request.get(restUrl, (err, response, body) => {
+            if (!err && response.statusCode == 200) {
+                let json = JSON.parse(body);
+                console.log(json);
+                let winddeg = json.wind.deg;
+                let direction =d2d(winddeg);
+                let msg = 'The current wind  is  flowing in ' + direction 
+                return res.json({
+                    speech: msg,
+                    displayText: msg,
+                    source: 'weather'
+                });
+            } else {
+                let errorMessage = 'Cannot get wind direction at the moment.';
+                return res.status(400).json({
+                    status: {
+                        code: 400,
+                        errorType: errorMessage
+                    }
+                });
+            }
+        })
+    }
 });
 
 //Starting server
