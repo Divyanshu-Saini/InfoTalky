@@ -9,7 +9,7 @@ const d2d = require('./deg2dirc');
 const utc = require('./utc');
 
 //Access keys
-const APIAI_ACCESS_KEY = '9a0f24e13b6b497093ab421b8ac66c3e';
+const APIAI_ACCESS_KEY = 'b46d0409224d4b91ab0a658eecac1572';
 const WEATHER_API_KEY = 'e45dec4e225f094290d62885fa0c8c6f';
 
 //initializing app
@@ -60,7 +60,7 @@ app.post('/weather-forcast', (req, res) => {
     }
 
     //request wind speed
-    if (req.body.result.action === 'wind-speed'){
+    if (req.body.result.action === 'wind-speed') {
         let city = req.body.result.parameters['geo-city'];
         let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
 
@@ -88,7 +88,7 @@ app.post('/weather-forcast', (req, res) => {
     }
 
     //request for wind direction
-    if (req.body.result.action === 'wind-direction'){
+    if (req.body.result.action === 'wind-direction') {
         let city = req.body.result.parameters['geo-city'];
         let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
 
@@ -97,8 +97,8 @@ app.post('/weather-forcast', (req, res) => {
                 let json = JSON.parse(body);
                 console.log(json);
                 let winddeg = json.wind.deg;
-                let direction =d2d(winddeg);
-                let msg = 'The current wind  is  flowing in ' + direction 
+                let direction = d2d(winddeg);
+                let msg = 'The current wind  is  flowing in ' + direction
                 return res.json({
                     speech: msg,
                     displayText: msg,
@@ -116,38 +116,12 @@ app.post('/weather-forcast', (req, res) => {
         })
     }
 
-    //request for sunrise time
-    if (req.body.result.action === 'sunrise'){
-        let city = req.body.result.parameters['geo-city'];
-        let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
-
-        request.get(restUrl, (err, response, body) => {
-            if (!err && response.statusCode == 200) {
-                let json = JSON.parse(body);
-                console.log(json);
-                let UNIX_time = json.sys.sunrise;
-                let sunrise =utc(UNIX_time);
-                let msg = let msg ='The the sun will rise at '+sunrise+ 'am in '+city
-                return res.json({
-                    speech: msg,
-                    displayText: msg,
-                    source: 'weather'
-                });
-            } else {
-                let errorMessage = 'Cannot get the data for sunrise';
-                return res.status(400).json({
-                    status: {
-                        code: 400,
-                        errorType: errorMessage
-                    }
-                });
-            }
-        })
-    }
 
 });
+
 
 //Starting server
 const server = app.listen(app.get('PORT'), function () {
     console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
+    console.log(utc(1485762037));
 });
