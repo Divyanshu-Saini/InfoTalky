@@ -7,7 +7,7 @@ const request = require('request');
 const apiai = require('apiai');
 
 //Access keys
-const APIAI_ACCESS_KEY = 'b46d0409224d4b91ab0a658eecac1572';
+const APIAI_ACCESS_KEY = '9a0f24e13b6b497093ab421b8ac66c3e';
 const WEATHER_API_KEY = 'e45dec4e225f094290d62885fa0c8c6f';
 
 //initializing app
