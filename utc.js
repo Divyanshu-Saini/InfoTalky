@@ -1,8 +1,6 @@
 
 module.exports = function(unix_timestamp){
-    if(typeof unix_timestamp === 'number' || isNaN(unix_timestamp)){
-        return -1;
-    }
+    
     var date = new Date(unix_timestamp*1000);
     // Hours part from the timestamp
     var hours = date.getHours();
