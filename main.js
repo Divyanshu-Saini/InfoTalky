@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const request = require('request');
 const apiai = require('apiai');
 const d2d = require('./deg2dirc');
+const utc = require('./utc');
 
 //Access keys
 const APIAI_ACCESS_KEY = '9a0f24e13b6b497093ab421b8ac66c3e';
