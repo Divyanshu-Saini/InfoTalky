@@ -58,7 +58,6 @@ app.post('/weather-forcast', (req, res) => {
             }
         })
     }
-
     //request wind speed
     if (req.body.result.action === 'wind-speed') {
         let city = req.body.result.parameters['geo-city'];
@@ -86,7 +85,6 @@ app.post('/weather-forcast', (req, res) => {
             }
         })
     }
-
     //request for wind direction
     if (req.body.result.action === 'wind-direction') {
         let city = req.body.result.parameters['geo-city'];
@@ -115,23 +113,102 @@ app.post('/weather-forcast', (req, res) => {
             }
         })
     }
-//request for sunrise and sunset
-if (req.body.result.action === 'sun-rise-set') {
-    let city = req.body.result.parameters['geo-city'];
-    let sunrise = req.body.result.parameters['weather-events'];
-    let sunset = req.body.result.parameters['weather-events'];
-    let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
+    //request for sunrise and sunset
+    if (req.body.result.action === 'sun-rise-set') {
+        let city = req.body.result.parameters['geo-city'];
+        let sunrise = req.body.result.parameters['weather-events'];
+        let sunset = req.body.result.parameters['weather-events'];
+        let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
 
-    if(sunrise == 'sunrise' || sunrise == 'sun rise' && sunset == 'sunset' || sunset == 'sun set'){
+        if (sunrise == 'sunrise' || sunrise == 'sun rise' && sunset == 'sunset' || sunset == 'sun set') {
+            request.get(restUrl, (err, response, body) => {
+                if (!err && response.statusCode == 200) {
+                    let json = JSON.parse(body);
+                    console.log(json);
+                    let unixrisetime = json.sys.sunrise;
+                    let unixsettime = json.sys.sunset;
+                    let sunrisetime = utc(unixrisetime);
+                    let sunsettime = utc(unixsettime);
+                    let msg = 'The sunrise occurs at' + sunrisetime + 'am and sunset occurs at ' + sunrisetime + 'pm in ' + city;
+                    return res.json({
+                        speech: msg,
+                        displayText: msg,
+                        source: 'weather'
+                    });
+                } else {
+                    let errorMessage = 'Cannot get wind direction at the moment.';
+                    return res.status(400).json({
+                        status: {
+                            code: 400,
+                            errorType: errorMessage
+                        }
+                    });
+                }
+            })
+        }
+
+        else if (sunrise == 'sunrise' || sunrise == 'sun rise' && sunset == undefined || sunset == null) {
+            request.get(restUrl, (err, response, body) => {
+                if (!err && response.statusCode == 200) {
+                    let json = JSON.parse(body);
+                    console.log(json);
+                    let unixtime = json.sys.sunrise;
+                    let sunrisetime = utc(unixtime)
+                    let msg = 'The sunrise occurs at' + sunrisetime + 'am in ' + city;
+                    return res.json({
+                        speech: msg,
+                        displayText: msg,
+                        source: 'weather'
+                    });
+                } else {
+                    let errorMessage = 'Cannot get wind direction at the moment.';
+                    return res.status(400).json({
+                        status: {
+                            code: 400,
+                            errorType: errorMessage
+                        }
+                    });
+                }
+            })
+        }
+
+        else if (sunset == 'sunset' || sunset == 'sun set' && sunrise == undefined || sunrise == null) {
+            request.get(restUrl, (err, response, body) => {
+                if (!err && response.statusCode == 200) {
+                    let json = JSON.parse(body);
+                    console.log(json);
+                    let unixtime = json.sys.sunset;
+                    let sunsettime = utc(unixtime)
+                    let msg = 'The sunset occurs at' + sunsettime + 'am in ' + city;
+                    return res.json({
+                        speech: msg,
+                        displayText: msg,
+                        source: 'weather'
+                    });
+                } else {
+                    let errorMessage = 'Cannot get wind direction at the moment.';
+                    return res.status(400).json({
+                        status: {
+                            code: 400,
+                            errorType: errorMessage
+                        }
+                    });
+                }
+            })
+        }
+
+    }
+    //Weather condition
+    if (req.body.result.action === 'weather.weather-contition') {
+        let city = req.body.result.parameters['geo-city'];
+        let weathercondition = req.body.result.parameters['weather-condition'];
+        let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
+
         request.get(restUrl, (err, response, body) => {
             if (!err && response.statusCode == 200) {
                 let json = JSON.parse(body);
                 console.log(json);
-                let unixrisetime = json.sys.sunrise;
-                let unixsettime =json.sys.sunset;
-                let sunrisetime = utc(unixrisetime);
-                let sunsettime = utc(unixsettime);
-                let msg = 'The sunrise occurs at' + sunrisetime + 'am and sunset occurs at ' + sunrisetime + 'pm in '+city;
+                let msg = 'As per the weather forcast the current weather condition in ' + json.name + ' is ' + json.weather[0].description;
                 return res.json({
                     speech: msg,
                     displayText: msg,
@@ -148,15 +225,15 @@ if (req.body.result.action === 'sun-rise-set') {
             }
         })
     }
-
-    else if(sunrise == 'sunrise' || sunrise == 'sun rise' && sunset == undefined || sunset == null){
+    //city location in coordinates
+    if (req.body.result.action === 'geo-lat-long') {
+        let city = req.body.result.parameters['geo-city'];
+        let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
         request.get(restUrl, (err, response, body) => {
             if (!err && response.statusCode == 200) {
                 let json = JSON.parse(body);
                 console.log(json);
-                let unixtime = json.sys.sunrise;
-                let sunrisetime = utc(unixtime)
-                let msg = 'The sunrise occurs at' + sunrisetime + 'am in ' + city;
+                let msg = 'The geographical location for ' + json.name + ' is  in ' + +json.coord.lat + ' latitude  and ' + json.coord.lon + ' longititude'
                 return res.json({
                     speech: msg,
                     displayText: msg,
@@ -173,34 +250,6 @@ if (req.body.result.action === 'sun-rise-set') {
             }
         })
     }
-
-    else if(sunset == 'sunset' || sunset == 'sun set' && sunrise == undefined || sunrise == null){
-        request.get(restUrl, (err, response, body) => {
-            if (!err && response.statusCode == 200) {
-                let json = JSON.parse(body);
-                console.log(json);
-                let unixtime = json.sys.sunset;
-                let sunsettime = utc(unixtime)
-                let msg = 'The sunset occurs at' + sunsettime + 'am in ' + city;
-                return res.json({
-                    speech: msg,
-                    displayText: msg,
-                    source: 'weather'
-                });
-            } else {
-                let errorMessage = 'Cannot get wind direction at the moment.';
-                return res.status(400).json({
-                    status: {
-                        code: 400,
-                        errorType: errorMessage
-                    }
-                });
-            }
-        })
-    }
-    
-}
-
 
 });
 
@@ -208,5 +257,4 @@ if (req.body.result.action === 'sun-rise-set') {
 //Starting server
 const server = app.listen(app.get('PORT'), function () {
     console.log("Express server listening on port %d in %s mode", server.address().port, app.settings.env);
-    console.log(utc(1485762037));
 });
