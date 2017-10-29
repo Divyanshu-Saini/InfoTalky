@@ -179,7 +179,7 @@ app.post('/weather-forcast', (req, res) => {
                     console.log(json);
                     let unixtime = json.sys.sunset;
                     let sunsettime = utc(unixtime)
-                    let msg = 'The sunset occurs at' + sunsettime + 'am in ' + city;
+                    let msg = 'The sunset occurs at' + sunsettime + 'pm in ' + city;
                     return res.json({
                         speech: msg,
                         displayText: msg,
