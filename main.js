@@ -255,8 +255,8 @@ app.post('/weather-forcast', (req, res) => {
 
 });
 
-app.get('/', function(req, res) {
-    res.render('home.html');
+app.get('/', function (req, res) {
+res.sendfile(__dirname + '/public/home.html');
 });
 
 //Starting server
