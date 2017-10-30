@@ -254,7 +254,7 @@ app.post('/weather-forcast', (req, res) => {
 });
 
 app.get('/',(req,res)=>{
-res.status(200).send(home.html);
+res.status(200).render('home.html');
 })
 
 //Starting server
