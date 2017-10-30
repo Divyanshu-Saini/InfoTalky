@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+app.use(express.staticProvider(__dirname + '/public'))
 
 //Webhook for openweather api
 app.post('/weather-forcast', (req, res) => {
@@ -254,7 +255,7 @@ app.post('/weather-forcast', (req, res) => {
 });
 
 app.get('/',(req,res)=>{
-res.status(200).render('home.html');
+res.render('home.html');
 })
 
 //Starting server
