@@ -253,6 +253,9 @@ app.post('/weather-forcast', (req, res) => {
 
 });
 
+app.get('/',(req,res)=>{
+res.satus(200).end(home.html);
+})
 
 //Starting server
 const server = app.listen(app.get('PORT'), function () {
