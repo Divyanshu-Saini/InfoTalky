@@ -252,6 +252,33 @@ app.post('/weather-forcast', (req, res) => {
             }
         })
     }
+    //temerature in particular city
+    if (req.body.result.action === 'temperature') {
+    let city = req.body.result.parameters['geo-city'];
+    let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
+
+    request.get(restUrl, (err, response, body) => {
+        if (!err && response.statusCode == 200) {
+            let json = JSON.parse(body);
+            console.log(json);
+            let tempC = ~~(json.main.temp - 273.15);
+            let msg = 'The current temperature in ' + json.name + ' is ' + tempC + '℃'
+            return res.json({
+                speech: msg,
+                displayText: msg,
+                source: 'weather'
+            });
+        } else {
+            let errorMessage = 'I cannot access temperature for this city.';
+            return res.status(400).json({
+                status: {
+                    code: 400,
+                    errorType: errorMessage
+                }
+            });
+        }
+    })
+}
 
 });
 
