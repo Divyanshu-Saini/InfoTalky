@@ -122,34 +122,7 @@ app.post('/weather-forcast', (req, res) => {
         let sunset = req.body.result.parameters['weather-events'];
         let restUrl = 'http://api.openweathermap.org/data/2.5/weather?APPID=' + WEATHER_API_KEY + '&q=' + city;
 
-        if (sunrise == 'sunrise' || sunrise == 'sun rise' && sunset == 'sunset' || sunset == 'sun set') {
-            request.get(restUrl, (err, response, body) => {
-                if (!err && response.statusCode == 200) {
-                    let json = JSON.parse(body);
-                    console.log(json);
-                    let unixrisetime = json.sys.sunrise;
-                    let unixsettime = json.sys.sunset;
-                    let sunrisetime = utc(unixrisetime);
-                    let sunsettime = utc(unixsettime);
-                    let msg = 'The sunrise occurs at' + sunrisetime + 'am and sunset occurs at ' + sunrisetime + 'pm in ' + city;
-                    return res.json({
-                        speech: msg,
-                        displayText: msg,
-                        source: 'weather'
-                    });
-                } else {
-                    let errorMessage = 'Cannot get wind direction at the moment.';
-                    return res.status(400).json({
-                        status: {
-                            code: 400,
-                            errorType: errorMessage
-                        }
-                    });
-                }
-            })
-        }
-
-        else if (sunrise == 'sunrise' || sunrise == 'sun rise' && sunset == undefined || sunset == null) {
+        if (sunrise == 'sunrise' || sunrise == 'sun rise' && sunset == undefined || sunset == null) {
             request.get(restUrl, (err, response, body) => {
                 if (!err && response.statusCode == 200) {
                     let json = JSON.parse(body);
