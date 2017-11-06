@@ -10,7 +10,7 @@ const utc = require('./utc');
 
 //Access keys
 const APIAI_ACCESS_KEY = 'b46d0409224d4b91ab0a658eecac1572';
-const WEATHER_API_KEY = 'e45dec4e225f094290d62885fa0c8c6f';
+const WEATHER_API_KEY = 'b038c215e2a6373388935bfa6d7c3a76';
 
 //initializing app
 const app = express();
